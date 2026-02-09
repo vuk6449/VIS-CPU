@@ -1,6 +1,9 @@
-﻿using System;
+﻿// TODO: Use Eax, Ebx, Ewax, Ewbx
+// TODO: Make Eax and Ebx actually change Ax and Bx
+// TODO: Add Al and Ah and configure them
+// TODO: Add Bl and Bh and configure them
+
 using System.Globalization;
-using System.IO;
 using System.Text;
 
 namespace VukCPU
@@ -11,6 +14,10 @@ namespace VukCPU
         public static string Ax = "0000"; // Classic register
         public static string Bx = "0000"; // Classic register
         public static string Dp = "0000"; // Fallback for when PT takes an invalid input (e.g. pt 46)
+        public static string Ewax = "00000000"; // 32-bit Seperated AX
+        public static string Ewbx = "00000000"; // 32-bit Seperated BX
+        public static string Eax = "00000000"; // Classic register
+        public static string Ebx = "00000000"; // Classic register
 
         private static void Main(string[] args)
         {
