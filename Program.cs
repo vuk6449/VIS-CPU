@@ -1,5 +1,4 @@
-﻿// TODO: Use Eax, Ebx, Ewax, Ewbx
-// TODO: Make Eax and Ebx actually change Ax and Bx
+﻿// TODO: Make Eax and Ebx actually change Ax and Bx
 // TODO: Add Al and Ah and configure them
 // TODO: Add Bl and Bh and configure them
 
@@ -92,8 +91,56 @@ namespace VukCPU
                     if (op == "a2") Console.WriteLine(Ascii(Ax));
                     else if (op == "b2") Console.WriteLine(Ascii(Bx));
                     else if (op == "dp") Console.WriteLine(Ascii(Dp));
+                    else if (op == "e2") Console.WriteLine(Ascii(Eax));
+                    else if (op == "e3") Console.WriteLine(Ascii(Ewax));
+                    else if (op == "e4") Console.WriteLine(Ascii(Ebx));
+                    else if (op == "e5") Console.WriteLine(Ascii(Ewbx));
                     else Console.WriteLine(Ascii(Dp));
                     i++;
+                }
+                else if (tokens[i] == "ea")
+                {
+                    string b1 = tokens[i + 1];
+                    string b2 = tokens[i + 2];
+                    string b3 = tokens[i + 3];
+                    string b4 = tokens[i + 4];
+
+                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                    Eax = word;
+                    i += 4;
+                }
+                else if (tokens[i] == "ew")
+                {
+                    string b1 = tokens[i + 1];
+                    string b2 = tokens[i + 2];
+                    string b3 = tokens[i + 3];
+                    string b4 = tokens[i + 4];
+
+                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                    Ewax = word;
+                    i += 4;
+                }
+                else if (tokens[i] == "eb")
+                {
+                    string b1 = tokens[i + 1];
+                    string b2 = tokens[i + 2];
+                    string b3 = tokens[i + 3];
+                    string b4 = tokens[i + 4];
+
+                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                    Ebx = word;
+                    i += 4;
+                }
+                else if (tokens[i] == "e6")
+                {
+                    string b1 = tokens[i + 1];
+                    string b2 = tokens[i + 2];
+                    string b3 = tokens[i + 3];
+                    string b4 = tokens[i + 4];
+
+                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                    Ewbx = word;
+                    i += 4;
                 }
             }
         }
