@@ -1,8 +1,4 @@
-﻿// TODO: Make Eax and Ebx actually change Ax and Bx
-// TODO: Add Al and Ah and configure them
-// TODO: Add Bl and Bh and configure them
-
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
 namespace VukCPU
@@ -17,6 +13,10 @@ namespace VukCPU
         public static string Ewbx = "00000000"; // 32-bit Seperated BX
         public static string Eax = "00000000"; // Classic register
         public static string Ebx = "00000000"; // Classic register
+        public static string Al = "00"; // Classic Register
+        public static string Ah = "00"; // Classic Register
+        public static string Bl = "00"; // Classic Register
+        public static string Bh = "00"; // Classic Register
 
         private static void Main(string[] args)
         {
@@ -52,95 +52,140 @@ namespace VukCPU
 
             Console.Clear();
 
-            char sc = ' ';
-            
-            string[] tokens = code.Split(sc, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = code.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
 
-            for (int i = 0; i < tokens.Length; i++)
+            for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
             {
-                if (tokens[i] == "ax")
+                string line = lines[lineIndex];
+                if (string.IsNullOrWhiteSpace(line))
                 {
-                    string b1 = tokens[i + 1];
-                    string b2 = tokens[i + 2];
-
-                    string word = $"{b1}{b2}".ToLower();
-                    Ax = word;
-                    i += 2;
+                    continue;
                 }
-                else if (tokens[i] == "bx")
-                {
-                    string b1 = tokens[i + 1];
-                    string b2 = tokens[i + 2];
 
-                    string word = $"{b1}{b2}".ToLower();
-                    Bx = word;
-                    i += 2;
-                }
-                else if (tokens[i] == "dp")
-                {
-                    string b1 = tokens[i + 1];
-                    string b2 = tokens[i + 2];
+                string[] tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                    string word = $"{b1}{b2}".ToLower();
-                    Dp = word;
-                    i += 2;
-                }
-                else if (tokens[i] == "pt" && i + 1 < tokens.Length)
+                for (int i = 0; i < tokens.Length; i++)
                 {
-                    string op = tokens[i + 1].ToLower();
-                    if (op == "a2") Console.WriteLine(Ascii(Ax));
-                    else if (op == "b2") Console.WriteLine(Ascii(Bx));
-                    else if (op == "dp") Console.WriteLine(Ascii(Dp));
-                    else if (op == "e2") Console.WriteLine(Ascii(Eax));
-                    else if (op == "e3") Console.WriteLine(Ascii(Ewax));
-                    else if (op == "e4") Console.WriteLine(Ascii(Ebx));
-                    else if (op == "e5") Console.WriteLine(Ascii(Ewbx));
-                    else Console.WriteLine(Ascii(Dp));
-                    i++;
-                }
-                else if (tokens[i] == "ea")
-                {
-                    string b1 = tokens[i + 1];
-                    string b2 = tokens[i + 2];
-                    string b3 = tokens[i + 3];
-                    string b4 = tokens[i + 4];
+                    if (tokens[i] == "ax")
+                    {
+                        string b1 = tokens[i + 1];
+                        string b2 = tokens[i + 2];
 
-                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
-                    Eax = word;
-                    i += 4;
-                }
-                else if (tokens[i] == "ew")
-                {
-                    string b1 = tokens[i + 1];
-                    string b2 = tokens[i + 2];
-                    string b3 = tokens[i + 3];
-                    string b4 = tokens[i + 4];
+                        string word = $"{b1}{b2}".ToLower();
+                        Ax = word;
+                        Al = b1.ToLower();
+                        Ah = b2.ToLower();
+                        i += 2;
+                    }
+                    else if (tokens[i] == "bx")
+                    {
+                        string b1 = tokens[i + 1];
+                        string b2 = tokens[i + 2];
 
-                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
-                    Ewax = word;
-                    i += 4;
-                }
-                else if (tokens[i] == "eb")
-                {
-                    string b1 = tokens[i + 1];
-                    string b2 = tokens[i + 2];
-                    string b3 = tokens[i + 3];
-                    string b4 = tokens[i + 4];
+                        string word = $"{b1}{b2}".ToLower();
+                        Bx = word;
+                        Bl = b1.ToLower();
+                        Bh = b2.ToLower();
+                        i += 2;
+                    }
+                    else if (tokens[i] == "dp")
+                    {
+                        string b1 = tokens[i + 1];
+                        string b2 = tokens[i + 2];
 
-                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
-                    Ebx = word;
-                    i += 4;
-                }
-                else if (tokens[i] == "e6")
-                {
-                    string b1 = tokens[i + 1];
-                    string b2 = tokens[i + 2];
-                    string b3 = tokens[i + 3];
-                    string b4 = tokens[i + 4];
+                        string word = $"{b1}{b2}".ToLower();
+                        Dp = word;
+                        i += 2;
+                    }
+                    else if (tokens[i] == "pt" && i + 1 < tokens.Length)
+                    {
+                        string op = tokens[i + 1].ToLower();
+                        if (op == "a2") Console.WriteLine(Ascii(Ax));
+                        else if (op == "b2") Console.WriteLine(Ascii(Bx));
+                        else if (op == "dp") Console.WriteLine(Ascii(Dp));
+                        else if (op == "e2") Console.WriteLine(Ascii(Eax));
+                        else if (op == "e3") Console.WriteLine(Ascii(Ewax));
+                        else if (op == "e4") Console.WriteLine(Ascii(Ebx));
+                        else if (op == "e5") Console.WriteLine(Ascii(Ewbx));
+                        else if (op == "ao") Console.WriteLine(Ascii(Al));
+                        else if (op == "ai") Console.WriteLine(Ascii(Ah));
+                        else if (op == "bo") Console.WriteLine(Ascii(Bl));
+                        else if (op == "bi") Console.WriteLine(Ascii(Bh));
+                        else Console.WriteLine(Ascii(Dp));
+                        i++;
+                    }
+                    else if (tokens[i] == "ea")
+                    {
+                        string b1 = tokens[i + 1];
+                        string b2 = tokens[i + 2];
+                        string b3 = tokens[i + 3];
+                        string b4 = tokens[i + 4];
 
-                    string word = $"{b1}{b2}{b3}{b4}".ToLower();
-                    Ewbx = word;
-                    i += 4;
+                        string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                        string axword = $"{b1}{b2}".ToLower();
+                        Eax = word;
+                        Ax = axword;
+                        Al = b1.ToLower();
+                        Ah = b2.ToLower();
+                        i += 4;
+                    }
+                    else if (tokens[i] == "ew")
+                    {
+                        string b1 = tokens[i + 1];
+                        string b2 = tokens[i + 2];
+                        string b3 = tokens[i + 3];
+                        string b4 = tokens[i + 4];
+
+                        string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                        Ewax = word;
+                        i += 4;
+                    }
+                    else if (tokens[i] == "eb")
+                    {
+                        string b1 = tokens[i + 1];
+                        string b2 = tokens[i + 2];
+                        string b3 = tokens[i + 3];
+                        string b4 = tokens[i + 4];
+
+                        string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                        string bxword = $"{b1}{b2}".ToLower();
+                        Ebx = word;
+                        Bx = bxword;
+                        Bl = b1.ToLower();
+                        Bh = b2.ToLower();
+                        i += 4;
+                    }
+                    else if (tokens[i] == "e6")
+                    {
+                        string b1 = tokens[i + 1];
+                        string b2 = tokens[i + 2];
+                        string b3 = tokens[i + 3];
+                        string b4 = tokens[i + 4];
+
+                        string word = $"{b1}{b2}{b3}{b4}".ToLower();
+                        Ewbx = word;
+                        i += 4;
+                    }
+                    else if (tokens[i] == "al")
+                    {
+                        Al = tokens[i + 1].ToLower();
+                        i++;
+                    }
+                    else if (tokens[i] == "ah")
+                    {
+                        Ah = tokens[i + 1].ToLower();
+                        i++;
+                    }
+                    else if (tokens[i] == "bl")
+                    {
+                        Bl = tokens[i + 1].ToLower();
+                        i++;
+                    }
+                    else if (tokens[i] == "bh")
+                    {
+                        Bh = tokens[i + 1].ToLower();
+                        i++;
+                    }
                 }
             }
         }
